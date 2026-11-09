@@ -5,6 +5,8 @@
 <head>
     <title>Catch The Mole!</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
             background-color: #1b2440;
@@ -37,25 +39,63 @@
             background-color: #ffffff;
         }
         
+
 #game-board {
     display: grid;
-    grid-template-columns: repeat(3, 80px);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    justify-content: center;
+    width: 90%;
+    max-width: 360px;
     margin: 30px auto;
 }
 
 #game-board button {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
     padding: 0;
     font-size: 40px;
     border-radius: 15px;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
 }
+
 
 #message {
     font-size: 20px;
 }
+
+
+@media (max-width: 600px) {
+    body {
+        padding-top: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    #game-board {
+        gap: 8px;
+        margin: 20px auto;
+    }
+
+    #game-board button {
+        font-size: 36px;
+    }
+}
+
+#game-board button:active {
+    transform: scale(0.95);
+}
+
 
     </style>
 </head>
