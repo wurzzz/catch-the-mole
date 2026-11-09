@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Catch The Mole!</title>
+
+    <style>
+        body {
+            background-color: #1b2440;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        h1 {
+            font-size: 40px;
+        }
+
+        h2 {
+            color: #f3d67c;
+            font-size: 32px;
+        }
+
+        button {
+            background-color: #F6A3C0;
+            color: #123d30;
+            font-size: 36px;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ffffff;
+        }
+        
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    gap: 12px;
+    justify-content: center;
+    margin: 30px auto;
+}
+
+#game-board button {
+    width: 80px;
+    height: 80px;
+    padding: 0;
+    font-size: 40px;
+    border-radius: 15px;
+}
+
+#message {
+    font-size: 20px;
+}
+
+    </style>
+</head>
+
+
+
+<body>
+    <h1>🐹 Catch The Mole!</h1>
+
+    <h2>Score: <span id="score">0</span></h2>
+
+    
+<h2>Time: <span id="timer">45</span>s</h2>
+
+<button id="start-button" onclick="startGame()">
+    Start Game
+</button>
+
+    <div id="game-board">
+        <button onclick="catchMole(0)">🕳️</button>
+        <button onclick="catchMole(1)">🕳️</button>
+        <button onclick="catchMole(2)">🕳️</button>
+        <button onclick="catchMole(3)">🕳️</button>
+        <button onclick="catchMole(4)">🕳️</button>
+        <button onclick="catchMole(5)">🕳️</button>
+        <button onclick="catchMole(6)">🕳️</button>
+        <button onclick="catchMole(7)">🕳️</button>
+        <button onclick="catchMole(8)">🕳️</button>
+    </div>
+
+    <p id="message">Find the mole!</p>
+
+    
+<script>
+    let score = 0;
+    let molePosition = 4;
+    let timeLeft = 45;
+    let gameRunning = false;
+
+    let countdownInterval;
+    let moleInterval;
+
+    const holes = document.querySelectorAll("#game-board button");
+
+    function showMole() {
+        holes.forEach(function(hole) {
+            hole.textContent = "🕳️";
+        });
+
+        if (gameRunning) {
+            holes[molePosition].textContent = "🐹";
+        }
+    }
+
+    function moveMole() {
+        molePosition = Math.floor(Math.random() * 9);
+            console.log("Mole moved to hole:", molePosition);
+
+        showMole();
+    }
+
+    function catchMole(clickedPosition) {
+        if (!gameRunning) {
+            return;
+        }
+
+        if (clickedPosition === molePosition) {
+            score = score + 20;
+
+            document.getElementById("score").textContent = score;
+            document.getElementById("message").textContent =
+                "Great catch! +20 points";
+
+            moveMole();
+        } else {
+            document.getElementById("message").textContent =
+                "Miss! Try another hole.";
+        }
+    }
+
+    function startGame() {
+        clearInterval(countdownInterval);
+        clearInterval(moleInterval);
+
+        score = 0;
+        timeLeft = 45;
+        gameRunning = true;
+
+        document.getElementById("score").textContent = score;
+        document.getElementById("timer").textContent = timeLeft;
+        document.getElementById("message").textContent =
+            "Catch the mole!";
+        document.getElementById("start-button").disabled = true;
+
+        moveMole();
+
+        countdownInterval = setInterval(function() {
+            timeLeft = timeLeft - 1;
+
+            document.getElementById("timer").textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }, 1000);
+
+        moleInterval = setInterval(function() {
+            moveMole();
+        }, 700);
+    }
+
+    function endGame() {
+        gameRunning = false;
+
+        clearInterval(countdownInterval);
+        clearInterval(moleInterval);
+
+        showMole();
+
+        document.getElementById("message").textContent =
+            "Game Over! Final Score: " + score;
+
+        document.getElementById("start-button").disabled = false;
+        document.getElementById("start-button").textContent =
+            "Play Again";
+    }
+
+    showMole();
+</script>
+
+</body>
+
+</html>
